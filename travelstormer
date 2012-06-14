@@ -1,0 +1,26 @@
+tmux has-session -t travelstormer
+
+if [ $? != 0 ]
+then
+  tmux new-session -s travelstormer -n editor -d
+
+  tmux send-keys -t travelstormer 'cd ~/work/Travelstormer' C-m
+  tmux send-keys -t travelstormer 'vim .' C-m
+
+  tmux split-window -v -p 25 -t travelstormer
+
+  tmux send-keys -t travelstormer:1.2 'cd ~/work/Travelstormer' C-m
+
+  # Servers
+  tmux new-window -n servers -t travelstormer
+  tmux split-window -v -t travelstormer:2
+
+  tmux send-keys -t travelstormer:2.1 'cd ~/work/Travelstormer' C-m
+  tmux send-keys -t travelstormer:2.1 'script/server' C-m
+  tmux send-keys -t travelstormer:2.2 'cd ~/work/Expensure' C-m
+  tmux send-keys -t travelstormer:2.2 'script/server -p 3001' C-m
+  
+  tmux select-pane -t travelstormer:1.1
+fi
+
+tmux attach -t travelstormer

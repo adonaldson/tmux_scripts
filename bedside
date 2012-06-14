@@ -1,0 +1,30 @@
+tmux has-session -t bedside
+
+if [ $? != 0 ]
+then
+  tmux new-session -s bedside -n editor -d
+
+  tmux send-keys -t bedside 'cd ~/dev/bedside' C-m
+  tmux send-keys -t bedside 'vim .' C-m
+
+  tmux split-window -v -p 25 -t bedside
+
+  tmux send-keys -t bedside:1.2 'cd ~/dev/bedside' C-m
+
+  # Servers
+  tmux new-window -n servers -t bedside
+  tmux split-window -v -t bedside:2
+
+  tmux send-keys -t bedside:2.1 'cd ~/dev/bedside' C-m
+  tmux send-keys -t bedside:2.1 'tail -f log/development.log' C-m
+  tmux send-keys -t bedside:2.2 'cd ~/dev/bedside' C-m
+  tmux send-keys -t bedside:2.2 'redis-server /usr/local/etc/redis.conf' C-m
+  
+  tmux split-window -v -t bedside:2
+  tmux send-keys -t bedside:2.3 'cd ~/dev/bedside' C-m
+  tmux send-keys -t bedside:2.3 'redis-cli' C-m
+  
+  tmux select-pane -t bedside:1.1
+fi
+
+tmux attach -t bedside

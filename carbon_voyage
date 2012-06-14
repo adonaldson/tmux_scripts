@@ -1,0 +1,25 @@
+tmux has-session -t carbon_voyage
+
+if [ $? != 0 ]
+then
+  tmux new-session -s carbon_voyage -n editor -d
+
+  tmux send-keys -t carbon_voyage 'cd ~/work/carbon_voyage' C-m
+  tmux send-keys -t carbon_voyage 'vim .' C-m
+
+  tmux split-window -v -p 25 -t carbon_voyage
+
+  tmux send-keys -t carbon_voyage:1.2 'cd ~/work/carbon_voyage' C-m
+
+  # Servers
+  tmux new-window -n servers -t carbon_voyage
+  tmux split-window -v -t carbon_voyage:2
+
+  tmux send-keys -t carbon_voyage:2.1 'cd ~/work/carbon_voyage' C-m
+  tmux send-keys -t carbon_voyage:2.1 'script/server' C-m
+  tmux send-keys -t carbon_voyage:2.2 'cd ~/work/carbon_voyage' C-m
+  
+  tmux select-pane -t carbon_voyage:1.1
+fi
+
+tmux attach -t carbon_voyage

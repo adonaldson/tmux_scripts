@@ -1,0 +1,25 @@
+tmux has-session -t sony
+
+if [ $? != 0 ]
+then
+  tmux new-session -s sony -n editor -d
+
+  tmux send-keys -t sony 'cd ~/work/sony/public' C-m
+  tmux send-keys -t sony 'vim .' C-m
+
+  tmux split-window -v -p 25 -t sony
+
+  tmux send-keys -t sony:1.2 'cd ~/work/sony' C-m
+
+  # Servers
+  tmux new-window -n servers -t sony
+  tmux split-window -v -t sony:2
+
+  tmux send-keys -t sony:2.1 'cd ~/work/sony' C-m
+  tmux send-keys -t sony:2.1 'script/server' # C-m
+  tmux send-keys -t sony:2.2 'cd ~/work/sony' C-m
+  
+  tmux select-pane -t sony:1.1
+fi
+
+tmux attach -t sony

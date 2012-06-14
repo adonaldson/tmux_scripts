@@ -1,0 +1,25 @@
+tmux has-session -t elementalise
+
+if [ $? != 0 ]
+then
+  tmux new-session -s elementalise -n editor -d
+
+  tmux send-keys -t elementalise 'cd ~/work/Elementalise' C-m
+  tmux send-keys -t elementalise 'vim .' C-m
+
+  tmux split-window -v -p 25 -t elementalise
+
+  tmux send-keys -t elementalise:1.2 'cd ~/work/Elementalise' C-m
+
+  # Servers
+  tmux new-window -n servers -t elementalise
+  tmux split-window -v -t elementalise:2
+
+  tmux send-keys -t elementalise:2.1 'cd ~/work/Elementalise' C-m
+  tmux send-keys -t elementalise:2.1 'tail -f log/development.log' # delib no C-m
+  tmux send-keys -t elementalise:2.2 'cd ~/work/Elementalise' C-m
+  
+  tmux select-pane -t elementalise:1.1
+fi
+
+tmux attach -t elementalise

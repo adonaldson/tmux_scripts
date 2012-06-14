@@ -1,0 +1,25 @@
+tmux has-session -t specle
+
+if [ $? != 0 ]
+then
+  tmux new-session -s specle -n editor -d
+
+  tmux send-keys -t specle 'cd ~/work/Specle' C-m
+  tmux send-keys -t specle 'vim .' C-m
+
+  tmux split-window -v -p 25 -t specle
+
+  tmux send-keys -t specle:1.2 'cd ~/work/Specle' C-m
+
+  # Servers
+  tmux new-window -n servers -t specle
+  tmux split-window -v -t specle:2
+
+  tmux send-keys -t specle:2.1 'cd ~/work/Specle' C-m
+  tmux send-keys -t specle:2.1 'script/server' C-m
+  tmux send-keys -t specle:2.2 'cd ~/work/Specle' C-m
+  
+  tmux select-pane -t specle:1.1
+fi
+
+tmux attach -t specle
