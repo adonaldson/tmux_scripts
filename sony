@@ -4,20 +4,28 @@ if [ $? != 0 ]
 then
   tmux new-session -s sony -n editor -d
 
-  tmux send-keys -t sony 'cd ~/work/sony' C-m
+  tmux send-keys -t sony 'cd ~/work/sony/app' C-m
   tmux send-keys -t sony 'vim .' C-m
 
   tmux split-window -v -p 25 -t sony
 
-  tmux send-keys -t sony:1.2 'cd ~/work/sony' C-m
+  tmux send-keys -t sony:1.2 'cd ~/work/sony/app' C-m
 
   # Servers
   tmux new-window -n servers -t sony
   tmux split-window -v -t sony:2
 
-  tmux send-keys -t sony:2.1 'cd ~/work/sony' C-m
-  tmux send-keys -t sony:2.1 'bin/rackup' C-m
-  tmux send-keys -t sony:2.2 'cd ~/work/sony' C-m
+  tmux send-keys -t sony:2.1 'cd ~/work/sony/app' C-m
+  tmux send-keys -t sony:2.1 'bin/foreman start' C-m
+  tmux send-keys -t sony:2.2 'cd ~/work/sony/app' C-m
+
+  # Template app
+  tmux new-window -n templates -t sony
+  tmux split-window -v -p 25 -t sony:3
+
+  tmux send-keys -t sony:3.1 'cd ~/work/sony/templates' C-m
+  tmux send-keys -t sony:3.1 'vim .' # C-m
+  tmux send-keys -t sony:3.2 'cd ~/work/sony/templates' C-m
   
   tmux select-pane -t sony:1.1
 fi

@@ -1,0 +1,25 @@
+tmux has-session -t cvf
+
+if [ $? != 0 ]
+then
+  tmux new-session -s cvf -n editor -d
+
+  tmux send-keys -t cvf 'cd /Users/andrew/work/cvf' C-m
+  tmux send-keys -t cvf 'vim .' C-m
+
+  tmux split-window -v -p 25 -t cvf
+
+  tmux send-keys -t cvf:1.2 'cd /Users/andrew/work/cvf' C-m
+
+  # Servers
+  tmux new-window -n servers -t cvf
+  tmux split-window -v -t cvf:2
+
+  tmux send-keys -t cvf:2.1 'cd /Users/andrew/work/cvf' C-m
+  tmux send-keys -t cvf:2.1 'bin/rails server' C-m
+  tmux send-keys -t cvf:2.2 'cd /Users/andrew/work/cvf' C-m
+  
+  tmux select-pane -t cvf:1.1
+fi
+
+tmux attach -t cvf

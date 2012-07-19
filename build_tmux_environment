@@ -19,7 +19,7 @@ then
   tmux split-window -v -t TMUX_NAME:2
 
   tmux send-keys -t TMUX_NAME:2.1 'cd DEV_DIR' C-m
-  tmux send-keys -t TMUX_NAME:2.1 'script/server' C-m
+  tmux send-keys -t TMUX_NAME:2.1 'foreman start' C-m
   tmux send-keys -t TMUX_NAME:2.2 'cd DEV_DIR' C-m
   
   tmux select-pane -t TMUX_NAME:1.1

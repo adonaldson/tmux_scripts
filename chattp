@@ -1,0 +1,25 @@
+tmux has-session -t chattp
+
+if [ $? != 0 ]
+then
+  tmux new-session -s chattp -n editor -d
+
+  tmux send-keys -t chattp 'cd /Users/andrew/work/chattp' C-m
+  tmux send-keys -t chattp 'vim .' C-m
+
+  tmux split-window -v -p 25 -t chattp
+
+  tmux send-keys -t chattp:1.2 'cd /Users/andrew/work/chattp' C-m
+
+  # Servers
+  tmux new-window -n servers -t chattp
+  tmux split-window -v -t chattp:2
+
+  tmux send-keys -t chattp:2.1 'cd /Users/andrew/work/chattp' C-m
+  tmux send-keys -t chattp:2.1 'foreman start -f Procfile.development' C-m
+  tmux send-keys -t chattp:2.2 'cd /Users/andrew/work/chattp' C-m
+  
+  tmux select-pane -t chattp:1.1
+fi
+
+tmux attach -t chattp

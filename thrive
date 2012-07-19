@@ -1,0 +1,25 @@
+tmux has-session -t thrive
+
+if [ $? != 0 ]
+then
+  tmux new-session -s thrive -n editor -d
+
+  tmux send-keys -t thrive 'cd /Users/andrew/work/Thrive' C-m
+  tmux send-keys -t thrive 'vim .' C-m
+
+  tmux split-window -v -p 25 -t thrive
+
+  tmux send-keys -t thrive:1.2 'cd /Users/andrew/work/Thrive' C-m
+
+  # Servers
+  tmux new-window -n servers -t thrive
+  tmux split-window -v -t thrive:2
+
+  tmux send-keys -t thrive:2.1 'cd /Users/andrew/work/Thrive' C-m
+  tmux send-keys -t thrive:2.1 'script/server' C-m
+  tmux send-keys -t thrive:2.2 'cd /Users/andrew/work/Thrive' C-m
+  
+  tmux select-pane -t thrive:1.1
+fi
+
+tmux attach -t thrive
